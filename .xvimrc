@@ -1,0 +1,165 @@
+" ~/.xvimrc - Ready by the XVim plugin for Xcode
+" =================== Keybinds =================== "
+
+" escape instead of ESC
+inoremap jj <Esc>`^
+
+" Quick command mode
+" nnoremap ; :
+
+" Bind ctrl+<movement> keys to move between windows, instead of ctrl+w+<movement>
+" Windows
+map <c-j> <c-w>j
+map <c-k> <c-w>k
+map <c-l> <c-w>l
+map <c-h> <c-w>h
+
+" Map sort function
+vnoremap ,r :sort<CR>
+
+" Better (un)indentation of code blocks
+vnoremap < <gv
+vnoremap > >gv
+
+" Clear search highlighting
+noremap ,/ :nohls<CR>
+
+" Map Q to repeat the last macro
+map Q @@
+
+" Remove ^M
+"noremap ,w :%s/\r//g<CR>
+
+" Save when esc
+ino <Esc> <Esc>:xcmenucmd Save<CR>
+
+
+" ================ Xcode Mappings ================== "
+" Toggle a breakpoint at the current line
+nmap ,b :xccmd toggleBreakpointAtCurrentLine<CR>
+
+" Toggle comments for the selection
+nnoremap gcc :xccmd commentAndUncommentCurrentLines<CR>
+vnoremap gc  :xccmd commentAndUncommentCurrentLines<CR>
+
+" Navigation
+"nnoremap ,o :xccmd openQuickly<cr>
+nmap ,n :nissue<CR>
+nmap ,p :pissue<CR>
+
+" Show
+"nmap ,g :xcmenucmd History...<CR>
+"nmap ,F :xccmd showInFinder<CR>
+"nmap ,D :xccmd showDeveloperDocumentation<CR>
+nmap ,g :xcmenucmd Show Quick Help for Selected Item<CR>
+
+" Code Snippet Library
+map ,cs :xcmenucmd Show Library<CR> 
+" File Template Library
+"map ,ft :xcmenucmd Show File Template Library<CR>
+" Media Library
+map ,ml :xcmenucmd Show Media Library<CR>
+" (Quick) help Inspector in Inspectors
+map ,hi :xcmenucmd Show Quick Help Inspector<CR>
+" File inspector
+map ,fi :xcmenucmd Show File Inspector<CR>
+
+map ,rp :xcmenucmd Reveal in Project Navigator<CR>
+map ,rs :xcmenucmd Reveal in Symbol Navigator<CR>
+
+" Toggle Toolbars
+" toggle navigator, debug area, utilities, ToolBar  
+" h-left, j-bottom, l-right, k-top or toolbar
+map ,th :xccmd toggleNavigatorsVisibility<CR>
+map ,tj :xccmd toggleDebuggerVisibility<CR>
+"map ,tl :xccmd toggleUtilitiesVisibility<CR>
+map ,tl :xcmenucmd Show Inspectors<CR>
+map ,tk :xccmd toggleToolbarShown<CR>
+
+" Building
+map ,bp :xcmenucmd Build<CR>
+map ,cp :xcmenucmd Clean<CR>
+map ,br :xcmenucmd Run<CR>
+
+" Tab
+map ,pt :xcmenucmd Show Previous Tab<CR>
+map ,bt :xcmenucmd Show Next Tab<CR>
+
+" Search the workspace for string cursor points to
+map ,s viw:xccmd findSelectedTextInWorkspace<CR>
+
+" Filter file (view menus achieve the goal too)
+map ,fn :xcmenucmd Filter in Navigator<CR>
+map ,fl :xcmenucmd Filter in Library<CR>
+
+" Re-Indent
+map ,ri :xcmenucmd Re-Indent<CR>
+map ,ad :xcmenucmd Add Documentation<CR>
+
+
+" ================= Copy/Paste =================== "
+" Better copy and paste
+set pastetoggle=<F2>
+
+" Paste mode - insert typed text literally
+set paste
+
+" Use the system pasteboard
+set pasteboard
+
+" =================== Searching ====================== "
+" Highlight all matches
+set hlsearch
+highlight Search guibg=orange
+
+" Incremental searching
+set incsearch
+
+" Dont ignore case while searching
+"set noic
+
+" Ignore case while searching
+set ignorecase
+
+" Intelligently override ignorecase
+set smartcase
+
+" Wrap searches
+set wrapscan
+
+
+" ====================== Display ===================== "
+" No status bar
+set laststatus=1
+
+" Show the cursor position all the time
+"set ruler
+
+" Dont wrap text across lines
+"set nowrap
+
+" Dont wrap text while typing
+"set fo-=t
+
+" Show the line numbers for each line
+set number
+
+" Help window height
+"set hh=15
+
+" Remove toolbar
+"set guioptions-=T
+
+" Show matching brackets briefly during inserting
+"set sm
+
+" Tenths of seconds to show match
+"set mat=5
+
+
+" ===================== Backspace ====================== "
+" Backspace and cursor keys wrap to previous/next line
+"set backspace=indent,eol,start whichwrap+=<,>,[,]
+
+" Backspace in Visual mode deletes selection
+"vnoremap <BS> d
