@@ -1,0 +1,386 @@
+
+# vim:set sw=4 ts=4 et:
+
+# Options {{{
+
+set main-options = -n 1000 # useful for large repos
+set horizontal-scroll = 33%
+# This show different git line graphics
+set line-graphics = utf-8
+set commit-order = default
+
+set vertical-split = no
+# Only work when vertical-split is yes
+set split-view-width = 70%
+# Only work when vertical-split is no
+set split-view-height = 85%
+
+
+set log-options = --show-signature
+set diff-options = --show-signature
+#set diff-highlight = true
+
+set tab-size = 2
+# Ignore whitespace (display with status-view but ignore on diff-view) (toggle with W)
+set ignore-space = at-eol
+# Ignore case when searching (default: false)
+set ignore-case = true
+# Enable mouse
+set mouse = true
+# Whether to pass line number as argument to Editor in the form of '+ number of lines'
+set editor-line-number = yes
+# When to refresh
+set refresh-mode = auto
+# set refresh-mode = after-command
+# set refresh-mode = periodic
+# set refresh-interval = 1
+set refresh-interval = 3
+# Wrap branch names with () and tag with <>
+set reference-format = (branch) [tag] <remote>
+
+# }}}
+# Column {{{
+set main-view-date-format = "%Y-%m-%d %H:%M"
+set refs-view-date-format = "%Y-%m-%d %H:%M"
+# }}}
+
+# Views {{{
+
+set blame-view    = date:default author:full file-name:auto id:yes,color line-number:no,interval=5 text
+set grep-view    = file-name:no line-number:yes,interval=1 text
+set main-view    = line-number:no,interval=5 id:yes date:relative-compact author:full commit-title:yes,graph,refs,overflow=no
+set refs-view   = date:custom,local=yes date:relative-compact author:width=15 ref commit-title
+set stash-view    = line-number:no,interval=5 id:no date:default author:full commit-title
+set status-view    = line-number:no,interval=5 status:short file-name
+set tree-view    = line-number:no,interval=5 mode author:full file-size date:default id:no file-name
+
+# }}}
+# Colors {{{
+color cursor default magenta
+color status white default
+color title-focus white blue
+color title-blur white default
+color date blue default
+color author green default
+color main-head color88 default bold
+color main-tag magenta default bold
+color stat-staged green default
+color stat-unstaged red default
+color stat-untracked yellow default
+color tree.header white default
+color tree.directory cyan default
+color refs.date blue default
+# }}}
+# Bindings {{{
+
+# Generic {{{
+
+
+# Vim-style keybindings for Tig
+#
+# To use these keybindings copy the file to your HOME directory and include
+# it from your ~/.tigrc file:
+#
+#    $ cp contrib/vim.tigrc ~/.tigrc.vim
+#    $ echo "source ~/.tigrc.vim" >> ~/.tigrc
+
+bind generic h scroll-left
+bind generic j move-down
+bind generic k move-up
+bind generic l scroll-right
+
+bind generic g  none
+bind generic gg move-first-line
+bind generic gj next
+bind generic gk previous
+bind generic gp parent
+bind generic gP back
+bind generic gn view-next
+
+bind generic gcc  !git commit -v
+bind generic gcan !?@git commit --amend -v --no-edit
+bind generic gcav !git commit --amend -v
+bind generic gcam ?@git commit --amend -m "%(prompt Enter message:)"
+bind generic gcar @git commit --amend --reuse-message=HEAD
+bind generic gcm  ?@git commit -v -m "%(prompt Enter message:)"
+bind generic gfix !sh -c "vim -p `git diff --name-only | sort | uniq`"
+bind generic gaa !git add .               # Add all
+
+bind generic G move-last-line
+
+bind generic <C-f> move-page-down
+bind generic <C-b> move-page-up
+
+bind generic v  none
+bind generic vm view-main
+bind generic vd view-diff
+bind generic vl view-log
+bind generic vt view-tree
+bind generic vx view-blob
+bind generic vb view-blame
+bind generic vr view-refs
+bind generic vs view-status
+bind generic vu view-stage
+bind generic vy view-stash
+bind generic vg view-grep
+bind generic vp view-pager
+bind generic vh view-help
+
+bind generic o  none
+bind generic oo :toggle sort-order
+bind generic os :toggle sort-field
+bind generic on :toggle line-number
+bind generic od :toggle date
+bind generic oa :toggle author
+bind generic og :toggle line-graphics
+bind generic of :toggle file-name
+bind generic op :toggle ignore-space
+bind generic oi :toggle id
+bind generic ot :toggle commit-title-overflow
+bind generic oF :toggle file-filter
+bind generic or :toggle commit-title-refs
+
+bind generic @  none
+bind generic @j :/^@@
+bind generic @k :?^@@
+bind generic @- :toggle diff-context -1
+bind generic @+ :toggle diff-context +1
+
+bind status  u  none
+bind stage   u  none
+bind generic uu status-update
+bind generic ! status-revert
+bind generic um status-merge
+bind generic ul stage-update-line
+bind generic us stage-split-chunk
+
+bind generic c    none
+
+bind generic y none
+bind generic yy @sh -c "echo -n %(commit) | pbcopy"
+
+bind generic Q quit
+
+bind generic [ none
+bind generic ] none
+bind generic [m move-prev-merge
+bind generic ]m move-next-merge
+bind generic [q find-prev
+bind generic ]q find-next
+
+# }}}
+# Main {{{
+#
+bind main ! ?git revert %(commit)
+
+bind main b   none
+bind main bdd ?>git branch -d %(branch)
+bind main bDD ?>git branch -D %(branch)
+bind main bgf !>sh -c "git log %(prompt Enter parent diff branch: )..%(branch) --oneline --graph --decorate=full --color=always" 
+bind main btf !>sh -c "tig %(prompt Enter parent diff branch: )..%(branch)" 
+bind main bco !>sh -c "chmod +x ~/dotfile/git-checkout.sh; sh ~/dotfile/git-checkout.sh"
+
+bind main c   none
+bind main cp  !git cherry-pick %(commit)
+bind main car @git commit --amend --reuse-message=HEAD
+bind main cfu @git commit --fixup %(commit)
+bind main coc !git checkout %(commit)
+bind main cor !git checkout %(remote)
+bind main coo ?>git checkout %(branch)
+bind main cob !git checkout -b "%(prompt Enter new branch name: )"
+bind main cs !git switch "%(prompt Enter new branch name: )"
+
+bind main f    none
+bind main fco  !sh -c "git checkout $(git branch --all | grep -v HEAD | sed 's/.* //' | sed 's|remotes/[^/]*/||' | sort -u | awk '{print $1}' | fzf-tmux -d 50% --no-hscroll --ansi)"
+bind main fdd  !sh -c "git branch -D $(git branch --all | grep -v HEAD | sed 's/.* //' | sed 's|remotes/[^/]*/||' | sort -u | awk '{print $1}' | fzf-tmux -d 50% --no-hscroll --ansi)"
+bind main fdpp !sh -c "git push origin -d $(git branch --all | grep -v HEAD | sed 's/.* //' | sed 's|remotes/[^/]*/||' | sort -u | awk '{print $1}' | fzf-tmux -d 50% --no-hscroll --ansi)"
+
+bind main g   none
+bind generic gfp !git fetch --prune
+bind main gfb !>sh -c "git fetch origin $(git branch --all | grep -v HEAD | sed 's/.* //' | sed 's|remotes/[^/]*/||' | sort -u | awk '{print $1}' | fzf-tmux -d 50% --no-hscroll --ansi):$(git branch --all | grep -v HEAD | sed 's/.* //' | sed 's|remotes/[^/]*/||' | sort -u | awk '{print $1}' | fzf-tmux -d 50% --no-hscroll --ansi)"
+bind main gr  ?git revert %(commit)
+
+bind main r   none
+bind main rsh !?git reset --hard %(commit)
+bind main rss !?git reset HEAD~
+bind main rbi !git rebase -i --autosquash %(commit)^1 # ^1 means 1 commit prior of %(commit)
+bind main rbr !sh -c "git rebase -i @~$(git rev-list --count %(commit)^1..%(branch))"
+bind main rbn !git rebase -i HEAD~"%(prompt Go back commit order no.: )"
+bind main rbb !>sh -c "git rebase -i $(git branch --all | grep -v HEAD | sed 's/.* //' | sed 's|remotes/[^/]*/||' | sort -u | awk '{print $1}' | fzf-tmux -d 50% --no-hscroll --ansi)"
+bind main rbb ?>git rebase -i %(branch)
+bind main rdd ?>git push origin %(branch) -d
+bind main rDD ?>git push origin %(branch) -d -f
+bind generic rbc ?git rebase --continue
+bind generic rba ?git rebase --abort
+
+bind main m    none
+bind main mb   ?git merge "%(merge branch name: )"
+bind main moff ?git merge --no-ff "%(merge branch name: )"
+
+bind main w :!git reflog
+
+bind main p   none
+bind main pp  ?git push
+bind main pu  ?git push -u %(remote) %(branch)
+bind main pff ?git push -f
+bind main pll !git pull
+bind main pla !git pull --all
+
+bind main v   none
+bind main ved !<sh -c "vim $(git diff --name-only | xargs)"
+bind main veg !<sh -c "vim -c 'Gedit %(commit)' $(ls | head -1)"
+bind main vef !<sh -c "vim $(git show %(commit) --pretty=format: --name-only | xargs)"
+
+bind main y  none
+bind main yc +sh -c "echo -n %(commit) | pbcopy"  # Copy commit id
+bind main yrb +sh -c "%(remote) | xargs | pbcopy" # Copy branch name
+bind main yb +sh -c "%(branch) | xargs | pbcopy"  # Copy branch name
+bind main ym +sh -c "git log --format=%B -n 1 %(commit) | xargs | pbcopy" # Copy commit message
+bind main yy !@sh -c "echo -n %(commit) | pbcopy"
+bind main ys ?@sh -c "echo -n %(commit) | pbcopy"
+bind main yt !@sh -c "echo -n %(text) | pbcopy"
+
+bind main R  none
+bind main RR refresh
+
+#bind main A @git commit --amend --reuse-message=HEAD
+#bind main C none
+#bind main CO ?git checkout %(commit)
+#bind main S ?git switch %(branch)
+#bind main RH !?git reset --hard %(commit)
+#bind main RB !git rebase -i --autosquash %(commit)^
+#bind main RI !git rebase -i HEAD~"%(prompt Go back commit order no.: )"
+#bind main RC ?git rebase --continue
+#bind main RA ?git rebase --abort
+#bind main CP ?git cherry-pick %(commit)
+#bind main F @git commit --fixup %(commit)
+#bind main E !<sh -c "vim -c 'Gedit %(commit)' $(ls | head -1)"
+#bind main V !<sh -c "vim $(git show %(commit) --pretty=format: --name-only | xargs)"
+bind main W :!git reflog
+
+bind main M  none
+bind main M  ?git merge "%(merge branch name: )"
+bind main MN ?git merge --no-ff "%(merge branch name: )"
+
+#bind main G none
+#bind main GP ?git push %(remote) %(branch)
+#bind main GF !<sh -c "vim $(git diff --name-only | xargs)"
+
+# }}}
+# Diff {{{
+
+bind diff <Up> move-up
+bind diff <Down> move-down
+
+# Edit all files of commit
+bind diff a  none
+bind diff aa !git add %(file)             # Add current file
+bind diff ap !git add -p %(file)          # Partially add current file
+
+bind diff c  none
+bind diff cc !git commit -v               # commit verbose
+bind diff ca !git commit -av              # Add and commit verbose
+
+bind diff d  none
+bind diff dd >git difftool --tool=vimdiff --trust-exit-code --no-prompt %(commit)^! -- %(file)
+
+bind diff e none
+
+bind diff v   none
+bind diff ved !<sh -c "vim $(git diff --name-only | xargs)"
+bind diff veg !<sh -c "vim -c 'Gedit %(commit)' $(ls | head -1)"
+bind diff vef !<sh -c "vim $(git show %(commit) --pretty=format: --name-only | xargs)"
+bind diff vet !@sh -c "git show %(commit) --pretty=format: --name-only | xargs | xsel -ib"
+bind diff vee !<sh -c "vim %(file)"
+
+bind diff y  none
+# Copy the selected line
+bind diff yt !@sh -c "git log --format=%B -n 1 %(commit) | xargs | pbcopy"
+
+bind diff o  none
+bind diff ed !>sh -c "code -g '%(file):%(lineno)'"
+bind diff edf !>sh -c " code $(fzf-tmux --query=%(file) --height=40%) "
+
+bind diff [  none
+bind diff ]  none
+bind diff [[ :toggle diff-context -5
+bind diff ]] :toggle diff-context +5
+
+# }}}
+
+# Tree {{{
+
+bind tree V !vim %(file)
+
+# }}}
+
+# Branch {{{
+
+bind branch N !@git branch %(prompt)
+bind branch C !@git co %(branch)
+bind branch D ?@git branch -D %(branch)
+
+# }}}
+
+# Refs {{{
+
+bind refs n find-next
+bind refs N find-prev
+
+bind refs R  none
+bind refs RR refresh
+
+bind refs r None
+bind refs rbb ?@git rebase %(ref)
+bind refs rbi ?@git rebase -i %(ref)
+bind refs rsh ?@git reset --hard %(ref)
+
+bind refs C  !git switch %(ref)
+
+bind refs c none
+bind refs coo !git switch %(ref)
+
+bind refs d  none
+bind refs dd ?@git branch -d %(branch)
+
+bind refs D none
+bind refs DD ?@git branch -D %(branch)
+
+bind refs S  !sh -c "git switch $(echo %(ref) | grep -o '[^origin\/].*')"
+
+bind refs t None
+bind refs td !@tig %(ref)..%(branch)
+
+bind refs g  none
+bind refs gco !@git checkout %(ref)
+
+# }}}
+
+# Status {{{
+
+bind status R !@git reset HEAD %(file)
+bind status A !@git commit --amend
+bind status N !@git add -N %(file)
+bind status ! ?>sh -c "rm -r %(file)"
+
+# }}}
+
+# Stage {{{
+
+bind stage 1 stage-update-line # Stage a single line
+bind stage C !@git commit # Commit staging changes
+bind stage e none
+bind stage ed !>sh -c "code -g '%(file):%(lineno)'"
+
+
+# }}}
+
+# Reflog {{{
+
+bind reflog c   none
+bind reflog cob ?sh -c "git checkout -b %(prompt Enter new branch name: ); git reset --hard %(commit)"
+bind reflog coo ?sh -c "echo $(commit)"
+
+# }}}
+
+# }}}

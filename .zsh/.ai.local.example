@@ -1,0 +1,14 @@
+# Copy this file to ~/.zsh/.ai.local and fill in your values.
+# .ai.local is gitignored and never committed.
+
+# GitLab
+export GITLAB_USER=""
+export GITLAB_TOKEN=""
+
+# AWS ECR Account IDs
+export AWS_ACCOUNT_ID_AP=""       # ap-northeast-1 account
+export AWS_ACCOUNT_ID_ORCAHUB=""  # orcahub account
+
+# AI / API keys
+# export OPENAI_API_KEY=""
+# export ANTHROPIC_API_KEY=""
