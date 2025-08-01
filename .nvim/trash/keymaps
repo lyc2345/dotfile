@@ -1,0 +1,157 @@
+--local nest = prequire("nest")
+--local wk = prequire("which-key")
+--
+---- register groups name via which-key and apply via nest
+--local register_groups = function(maps)
+--	for _, map in pairs(maps) do
+--		if map.group or map.prefix then
+--			-- wk.register({
+--			-- 	string.format("%s", map.prefix), group = map.group,
+--			-- })
+--			wk.add({
+--				string.format("%s", map.prefix),
+--				group = map.group,
+--			})
+--		end
+--		nest.applyKeymaps(map)
+--	end
+--end
+--
+--local escapes = {
+--	{ mode = "i", { "jk", "<Esc>" } },
+--	{ mode = "i", { "jj", "<Esc>" } },
+--	{ mode = "t", { "jk", "<C-\\><C-N>" } },
+--}
+--
+--local leader = {
+--	prefix = "<leader>",
+--	{ "l", "<cmd>luaf%<cr>" },
+--	{ "q", "<cmd>Format<cr>" },
+--}
+--
+--local packer = {
+--	group = "packer",
+--	prefix = "<leader>p",
+--	{ "i", "<cmd>PackerInstall<cr>" },
+--	{ "S", "<cmd>PackerSource<cr>" },
+--	{ "s", "<cmd>PackerSync<cr>" },
+--	{ "u", "<cmd>PackerUpdate<cr>" },
+--	{ "c", "<cmd>PackerCompile<cr>" },
+--	{ "p", "<cmd>PackerProfile<cr>" },
+--	{ "t", "<cmd>PackerStatus<cr>" },
+--	{ "d", "<cmd>PackerClean<cr>" },
+--	{ "o", "<cmd>PackerConfig<cr>" },
+--}
+--
+--local telescope = {
+--	group = "telescope",
+--	prefix = "<leader>t",
+--	{ "t", "<cmd>Telescope<cr>" },
+--	{ "f", "<cmd>Telescope fd<cr>" },
+--	{ "s", "<cmd>Telescope file_browser<cr>" },
+--	{ "b", "<cmd>Telescope buffers<cr>" },
+--	{ "g", "<cmd>Telescope live_grep<cr>" },
+--	{ "h", "<cmd>Telescope command_history<cr>" },
+--	{ "r", "<cmd>Telescope oldfiles<cr>" },
+--}
+--
+--local n_gitsigns = {
+--	group = "gitsigns",
+--	prefix = "<leader>h",
+--	{ "s", "<cmd>lua require('gitsigns').stage_hunk()<cr>" },
+--	{ "u", "<cmd>lua require('gitsigns').undo_stage_hunk()<cr>" },
+--	{ "r", "<cmd>lua require('gitsigns').reset_hunk()<cr>" },
+--	{ "R", "<cmd>lua require('gitsigns').reset_buffer()<cr>" },
+--	{ "p", "<cmd>lua require('gitsigns').preview_hunk()<cr>" },
+--	{ "b", "<cmd>lua require('gitsigns').blame_line(true)<cr>" },
+--	{ "S", "<cmd>lua require('gitsigns').stage_buffer()<cr>" },
+--	{ "U", "<cmd>lua require('gitsigns').reset_buffer_index()<cr>" },
+--}
+--
+--local v_gitsigns = {
+--	group = "gitsigns",
+--	prefix = "<leader>h",
+--	mode = "v",
+--	{ "s", "<cmd>lua require('gitsigns').stage_hunk({vim.fn.line('.'), vim.fn.line('v'))})<cr>" },
+--	{ "r", "<cmd>lua require('gitsigns').reset_hunk({vim.fn.line('.'), vim.fn.line('v'))})<cr>" },
+--}
+--
+--register_groups({
+--	escapes,
+--	packer,
+--	leader,
+--    telescope,
+--    n_gitsigns,
+--	v_gitsigns,
+--})
+--
+--nest.applyKeymaps({ "<leader>m", "<cmd>split | terminal<cr>" })
+--nest.applyKeymaps({ "<leader>nf", "<cmd>DashboardNewFile<cr>" })
+--
+---- [[ Basic Keymaps ]]
+----  See `:help vim.keymap.set()`
+--
+---- Clear highlights on search when pressing <Esc> in normal mode
+----  See `:help hlsearch`
+--vim.keymap.set("n", "<Esc>", "<cmd>nohlsearch<CR>")
+--
+---- Diagnostic keymaps
+--vim.keymap.set("n", "<leader>q", vim.diagnostic.setloclist, { desc = "Open diagnostic [Q]uickfix list" })
+--
+---- Exit terminal mode in the builtin terminal with a shortcut that is a bit easier
+---- for people to discover. Otherwise, you normally need to press <C-\><C-n>, which
+---- is not what someone will guess without a bit more experience.
+----
+---- NOTE: This won't work in all terminal emulators/tmux/etc. Try your own mapping
+---- or just use <C-\><C-n> to exit terminal mode
+--vim.keymap.set("t", "<Esc><Esc>", "<C-\\><C-n>", { desc = "Exit terminal mode" })
+--
+---- TIP: Disable arrow keys in normal mode
+---- vim.keymap.set('n', '<left>', '<cmd>echo "Use h to move!!"<CR>')
+---- vim.keymap.set('n', '<right>', '<cmd>echo "Use l to move!!"<CR>')
+---- vim.keymap.set('n', '<up>', '<cmd>echo "Use k to move!!"<CR>')
+---- vim.keymap.set('n', '<down>', '<cmd>echo "Use j to move!!"<CR>')
+--
+---- Keybinds to make split navigation easier.
+----  Use CTRL+<hjkl> to switch between windows
+----
+----  See `:help wincmd` for a list of all window commands
+--vim.keymap.set("n", "<C-h>", "<C-w><C-h>", { desc = "Move focus to the left window" })
+--vim.keymap.set("n", "<C-l>", "<C-w><C-l>", { desc = "Move focus to the right window" })
+--vim.keymap.set("n", "<C-j>", "<C-w><C-j>", { desc = "Move focus to the lower window" })
+--vim.keymap.set("n", "<C-k>", "<C-w><C-k>", { desc = "Move focus to the upper window" })
+--
+---- NOTE: Some terminals have colliding keymaps or are not able to send distinct keycodes
+---- vim.keymap.set("n", "<C-S-h>", "<C-w>H", { desc = "Move window to the left" })
+---- vim.keymap.set("n", "<C-S-l>", "<C-w>L", { desc = "Move window to the right" })
+---- vim.keymap.set("n", "<C-S-j>", "<C-w>J", { desc = "Move window to the lower" })
+---- vim.keymap.set("n", "<C-S-k>", "<C-w>K", { desc = "Move window to the upper" })
+--
+---- [[ Basic Autocommands ]]
+----  See `:help lua-guide-autocommands`
+--
+---- Highlight when yanking (copying) text
+----  Try it with `yap` in normal mode
+----  See `:help vim.hl.on_yank()`
+--vim.api.nvim_create_autocmd("TextYankPost", {
+--	desc = "Highlight when yanking (copying) text",
+--	group = vim.api.nvim_create_augroup("kickstart-highlight-yank", { clear = true }),
+--	callback = function()
+--		vim.hl.on_yank()
+--	end,
+--})
+--
+---- [[ Install `lazy.nvim` plugin manager ]]
+----    See `:help lazy.nvim.txt` or https://github.com/folke/lazy.nvim for more info
+--local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
+--if not (vim.uv or vim.loop).fs_stat(lazypath) then
+--	local lazyrepo = "https://github.com/folke/lazy.nvim.git"
+--	local out = vim.fn.system({ "git", "clone", "--filter=blob:none", "--branch=stable", lazyrepo, lazypath })
+--	if vim.v.shell_error ~= 0 then
+--		error("Error cloning lazy.nvim:\n" .. out)
+--	end
+--end
+--
+-----@type vim.Option
+--local rtp = vim.opt.rtp
+--rtp:prepend(lazypath)

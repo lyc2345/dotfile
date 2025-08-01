@@ -1,0 +1,501 @@
+--return {
+--	{ "mason-org/mason.nvim", pin = true },
+--
+--	{
+--		"mason-org/mason-lspconfig.nvim",
+--		pin = true,
+--		dependencies = {
+--			{ "mason-org/mason.nvim" },
+--			{ "neovim/nvim-lspconfig" },
+--		},
+--		opts = {
+--			automatic_installation = true,
+--			automatic_enable = {
+--				"rust_analyzer",
+--				"vimls",
+--				"lua_ls",
+--				"stylua",
+--			},
+--			ensure_installed = {
+--				"rust_analyzer",
+--				"vimls",
+--				"lua_ls",
+--				"stylua",
+--				"ts_ls",
+--				-- "eslint",
+--				-- "html",
+--				--"cssls",
+--				"jsonls",
+--				--"tsserver", -- unknown
+--				--"tailwindcss",
+--				"debugpy",
+--				"pylsp",
+--				"pyright",
+--				"pylint",
+--				"python-lsp-server",
+--				"isort", -- python formatter
+--				"black", -- python formatter
+--				-- "ruff_lsp", -- deprecated
+--				"ruff",
+--			},
+--		},
+--	},
+--
+--	{
+--		"neovim/nvim-lspconfig",
+--		event = { "BufReadPre", "BufNewFile" },
+--		dependencies = {
+--			"hrsh7th/cmp-nvim-lsp",
+--			-- https://github.com/lukas-reineke/lsp-format.nvim
+--			"lukas-reineke/lsp-format.nvim",
+--		},
+--		opts = {
+--			setup = {
+--				clangd = function(_, opts)
+--					opts.capabilities.offsetEncoding = { "utf-16" }
+--				end,
+--			},
+--		},
+--		config = function()
+--			local nvim_lsp = require("lspconfig")
+--			local mason_lspconfig = require("mason-lspconfig")
+--
+--			local protocol = require("vim.lsp.protocol")
+--
+--			local on_attach = function(client, bufnr)
+--				-- format on save
+--				if client.server_capabilities.documentFormattingProvider then
+--					vim.api.nvim_create_autocmd("BufWritePre", {
+--						group = vim.api.nvim_create_augroup("Format", { clear = true }),
+--						buffer = bufnr,
+--						callback = function()
+--							vim.lsp.buf.format()
+--						end,
+--					})
+--				end
+--
+--				local attach_opts = { silent = true, buffer = bufnr }
+--				vim.keymap.set("n", "gD", vim.lsp.buf.declaration, attach_opts)
+--				vim.keymap.set("n", "gd", vim.lsp.buf.definition, attach_opts)
+--				vim.keymap.set("n", "K", vim.lsp.buf.hover, attach_opts)
+--				vim.keymap.set("n", "gi", vim.lsp.buf.implementation, attach_opts)
+--				vim.keymap.set("n", "<C-s>", vim.lsp.buf.signature_help, attach_opts)
+--				vim.keymap.set("n", "<leader>wa", vim.lsp.buf.add_workspace_folder, attach_opts)
+--				vim.keymap.set("n", "<leader>wr", vim.lsp.buf.remove_workspace_folder, attach_opts)
+--				vim.keymap.set("n", "<leader>wl", function()
+--					print(vim.inspect(vim.lsp.buf.list_workspace_folders()))
+--				end, attach_opts)
+--				vim.keymap.set("n", "<leader>D", vim.lsp.buf.type_definition, attach_opts)
+--				vim.keymap.set("n", "<leader>rn", vim.lsp.buf.rename, attach_opts)
+--				vim.keymap.set("n", "so", require("telescope.builtin").lsp_references, attach_opts)
+--			end
+--
+--			local capabilities = require("cmp_nvim_lsp").default_capabilities()
+--
+--			-- https://github.com/neovim/nvim-lspconfig/pull/3232
+--			mason_lspconfig.setup_handlers({
+--				function(server)
+--					nvim_lsp[server].setup({
+--						capabilities = capabilities,
+--					})
+--				end,
+--				["tsserver"] = function()
+--					nvim_lsp["tsserver"].setup({
+--						on_attach = on_attach,
+--						capabilities = capabilities,
+--					})
+--				end,
+--				["jsonls"] = function()
+--					nvim_lsp["jsonls"].setup({
+--						on_attach = on_attach,
+--						capabilities = capabilities,
+--					})
+--				end,
+--				["pyright"] = function()
+--					nvim_lsp["pyright"].setup({
+--						on_attach = on_attach,
+--						capabilities = capabilities,
+--					})
+--				end,
+--				function(server_name)
+--					require("lspconfig")[server_name].setup({})
+--				end,
+--			})
+--		end,
+--	},
+--
+--	{
+--
+--		"hrsh7th/nvim-cmp",
+--		version = false, -- last release is way too old
+--		event = "InsertEnter",
+--		dependencies = {
+--			"hrsh7th/cmp-nvim-lsp",
+--			"hrsh7th/cmp-buffer",
+--			"hrsh7th/cmp-path",
+--		},
+--		opts = function()
+--			vim.api.nvim_set_hl(0, "CmpGhostText", { link = "Comment", default = true })
+--			local cmp = require("cmp")
+--			local defaults = require("cmp.config.default")()
+--			local auto_select = true
+--			return {
+--				-- Not all LSP servers add brackets when completing a function.
+--				-- To better deal with this, LazyVim adds a custom option to cmp,
+--				-- that you can configure. For example:
+--				auto_brackets = {
+--					"python",
+--				}, -- configure any filetype to auto add brackets
+--				completion = {
+--					completeopt = "menu,menuone,noinsert" .. (auto_select and "" or ",noselect"),
+--				},
+--				snippet = {
+--					expand = function(args)
+--						luasnip.lsp_expand(args.body)
+--					end,
+--				},
+--				preselect = auto_select and cmp.PreselectMode.Item or cmp.PreselectMode.None,
+--				mapping = cmp.mapping.preset.insert({
+--					["<C-d>"] = cmp.mapping.scroll_docs(-4), -- <C-b>
+--					["<C-u>"] = cmp.mapping.scroll_docs(4), -- <C-f>
+--					["<C-n>"] = cmp.mapping.select_next_item({ behavior = cmp.SelectBehavior.Insert }),
+--					["<C-p>"] = cmp.mapping.select_prev_item({ behavior = cmp.SelectBehavior.Insert }),
+--					["<C-Space>"] = cmp.mapping.complete(),
+--					["<C-e>"] = cmp.mapping.close(),
+--					["<CR>"] = LazyVim.cmp.confirm({
+--						select = auto_select,
+--						--behavior = cmp.ConfirmBehavior.Replace,
+--						--select = true,
+--					}),
+--					["<Tab>"] = cmp.mapping(function(fallback)
+--						if cmp.visible() then
+--							--cmp.select_next_item({ select = true})
+--							cmp.select_next_item()
+--						elseif luasnip.expand_or_jumpable() then
+--							luasnip.expand_or_jump()
+--						else
+--							fallback()
+--						end
+--					end, { "i", "s" }),
+--					["<S-Tab>"] = cmp.mapping(function(fallback)
+--						if cmp.visible() then
+--							cmp.select_prev_item()
+--							--cmp.select_prev_item({ select = true})
+--						elseif vim.snippet.active({ direction = -1 }) then
+--							vim.schedule(function()
+--								vim.snippet.jump(-1)
+--							end)
+--						else
+--							fallback()
+--						end
+--					end, { "i", "s" }),
+--					["<C-y>"] = LazyVim.cmp.confirm({ select = true }),
+--					["<S-CR>"] = LazyVim.cmp.confirm({ behavior = cmp.ConfirmBehavior.Replace }), -- Accept currently selected item. Set `select` to `false` to only confirm explicitly selected items.
+--					["<C-CR>"] = function(fallback)
+--						cmp.abort()
+--						fallback()
+--					end,
+--					["<tab>"] = function(fallback)
+--						return LazyVim.cmp.map({ "snippet_forward", "ai_accept" }, fallback)()
+--					end,
+--				}),
+--				sources = cmp.config.sources({
+--					{ name = "lazydev" },
+--					{ name = "nvim_lsp" },
+--					{ name = "luasnip" },
+--					{ name = "path" },
+--					{ name = "copilot" },
+--				}, {
+--					{ name = "buffer" },
+--				}),
+--				formatting = {
+--					format = function(entry, item)
+--						local icons = LazyVim.config.icons.kinds
+--						if icons[item.kind] then
+--							item.kind = icons[item.kind] .. item.kind
+--						end
+--
+--						local widths = {
+--							abbr = vim.g.cmp_widths and vim.g.cmp_widths.abbr or 40,
+--							menu = vim.g.cmp_widths and vim.g.cmp_widths.menu or 30,
+--						}
+--
+--						for key, width in pairs(widths) do
+--							if item[key] and vim.fn.strdisplaywidth(item[key]) > width then
+--								item[key] = vim.fn.strcharpart(item[key], 0, width - 1) .. "…"
+--							end
+--						end
+--
+--						return item
+--					end,
+--				},
+--				experimental = {
+--					-- only show ghost text when we show ai completions
+--					ghost_text = vim.g.ai_cmp and {
+--						hl_group = "CmpGhostText",
+--					} or false,
+--				},
+--				sorting = defaults.sorting,
+--			}
+--		end,
+--		main = "lazyvim.util.cmp",
+--	},
+--
+--	{
+--		"lukas-reineke/lsp-format.nvim",
+--		config = function()
+--			require("lsp-format").setup({
+--				typescript = {
+--					tab_width = function()
+--						return vim.opt.shiftwidth:get()
+--					end,
+--				},
+--				lua = { tab_width = 4 },
+--				python = { tab_width = 4 },
+--				yaml = { tab_width = 2 },
+--			})
+--		end,
+--	},
+--}
+
+--return {
+--	{
+--		"hrsh7th/nvim-cmp",
+--		version = false, -- last release is way too old
+--		event = "InsertEnter",
+--		dependencies = {
+--			"hrsh7th/cmp-nvim-lsp",
+--			"hrsh7th/cmp-buffer",
+--			"hrsh7th/cmp-path",
+--		},
+--		-- Not all LSP servers add brackets when completing a function.
+--		-- To better deal with this, LazyVim adds a custom option to cmp,
+--		-- that you can configure. For example:
+--		--
+--		-- ```lua
+--		-- opts = {
+--		--   auto_brackets = { "python" }
+--		-- }
+--		-- ```
+--		opts = function()
+--			vim.api.nvim_set_hl(0, "CmpGhostText", { link = "Comment", default = true })
+--			local cmp = require("cmp")
+--			local defaults = require("cmp.config.default")()
+--			local auto_select = true
+--			return {
+--				auto_brackets = {}, -- configure any filetype to auto add brackets
+--				completion = {
+--					completeopt = "menu,menuone,noinsert" .. (auto_select and "" or ",noselect"),
+--				},
+--				preselect = auto_select and cmp.PreselectMode.Item or cmp.PreselectMode.None,
+--				mapping = cmp.mapping.preset.insert({
+--					["<C-b>"] = cmp.mapping.scroll_docs(-4),
+--					["<C-f>"] = cmp.mapping.scroll_docs(4),
+--					["<C-n>"] = cmp.mapping.select_next_item({ behavior = cmp.SelectBehavior.Insert }),
+--					["<C-p>"] = cmp.mapping.select_prev_item({ behavior = cmp.SelectBehavior.Insert }),
+--					["<C-Space>"] = cmp.mapping.complete(),
+--					["<CR>"] = LazyVim.cmp.confirm({ select = auto_select }),
+--					["<C-y>"] = LazyVim.cmp.confirm({ select = true }),
+--					["<S-CR>"] = LazyVim.cmp.confirm({ behavior = cmp.ConfirmBehavior.Replace }), -- Accept currently selected item. Set `select` to `false` to only confirm explicitly selected items.
+--					["<C-CR>"] = function(fallback)
+--						cmp.abort()
+--						fallback()
+--					end,
+--					["<tab>"] = function(fallback)
+--						return LazyVim.cmp.map({ "snippet_forward", "ai_accept" }, fallback)()
+--					end,
+--				}),
+--				sources = cmp.config.sources({
+--					{ name = "lazydev" },
+--					{ name = "nvim_lsp" },
+--					{ name = "path" },
+--				}, {
+--					{ name = "buffer" },
+--				}),
+--				formatting = {
+--					format = function(entry, item)
+--						local icons = LazyVim.config.icons.kinds
+--						if icons[item.kind] then
+--							item.kind = icons[item.kind] .. item.kind
+--						end
+--
+--						local widths = {
+--							abbr = vim.g.cmp_widths and vim.g.cmp_widths.abbr or 40,
+--							menu = vim.g.cmp_widths and vim.g.cmp_widths.menu or 30,
+--						}
+--
+--						for key, width in pairs(widths) do
+--							if item[key] and vim.fn.strdisplaywidth(item[key]) > width then
+--								item[key] = vim.fn.strcharpart(item[key], 0, width - 1) .. "…"
+--							end
+--						end
+--
+--						return item
+--					end,
+--				},
+--				experimental = {
+--					-- only show ghost text when we show ai completions
+--					ghost_text = vim.g.ai_cmp and {
+--						hl_group = "CmpGhostText",
+--					} or false,
+--				},
+--				sorting = defaults.sorting,
+--			}
+--		end,
+--		main = "lazyvim.util.cmp",
+--	},
+--	{
+--		"mason-org/mason-lspconfig.nvim",
+--		tag = "v1.32.0",
+--		pin = true,
+--		dependencies = {
+--			{ "mason-org/mason.nvim", tag = "v1.11.0", pin = true },
+--			{ "neovim/nvim-lspconfig" },
+--		},
+--		opts = {
+--			automatic_installation = true,
+--			automatic_enable = {
+--				"rust_analyzer",
+--				"vimls",
+--				"lua_ls",
+--				"stylua",
+--			},
+--			ensure_installed = {
+--				"rust_analyzer",
+--				"vimls",
+--				"lua_ls",
+--				"stylua",
+--				"ts_ls",
+--				-- "eslint",
+--				-- "html",
+--				--"cssls",
+--				"jsonls",
+--				--"tsserver", -- unknown
+--				--"tailwindcss",
+--				"debugpy",
+--				"pylsp",
+--				"pyright",
+--				"pylint",
+--				"python-lsp-server",
+--				"isort", -- python formatter
+--				"black", -- python formatter
+--				-- "ruff_lsp", -- deprecated
+--				"ruff",
+--			},
+--		},
+--		config = function()
+--			require("config.mason")
+--		end,
+--	},
+--}
+
+--return {
+--	{
+--		"hrsh7th/nvim-cmp",
+--		event = "InsertEnter",
+--		dependencies = {
+--			{ "neovim/nvim-lspconfig", after = "nvim-cmp" },
+--			{ "hrsh7th/cmp-nvim-lsp", after = "nvim-cmp" },
+--			"hrsh7th/cmp-buffer", -- source for text in buffer
+--			"hrsh7th/cmp-path", -- source for file system paths
+--			{ "hrsh7th/cmp-cmdline", after = "nvim-cmp" },
+--			{ "hrsh7th/cmp-vsnip", after = "nvim-cmp" },
+--			{ "hrsh7th/vim-vsnip", after = "nvim-cmp" },
+--			{ "saadparwaiz1/cmp_luasnip", after = "LuaSnip" },
+--			{
+--				"L3MON4D3/LuaSnip",
+--				version = "v2.*",
+--				-- install jsregexp (optional!).
+--				build = "make install_jsregexp",
+--			},
+--			"rafamadriz/friendly-snippets",
+--			"onsails/lspkind.nvim", -- vs-code like pictograms
+--		},
+--		config = function()
+--			--require("config.nvim-cmp")
+--		end,
+--	},
+--}
+--
+--return {
+--	{
+--		"neovim/nvim-lspconfig",
+--		event = { "BufReadPre", "BufNewFile" },
+--		dependencies = {
+--			"hrsh7th/cmp-nvim-lsp",
+--			-- https://github.com/lukas-reineke/lsp-format.nvim
+--			"lukas-reineke/lsp-format.nvim",
+--		},
+--		config = function()
+--			local nvim_lsp = require("lspconfig")
+--			local mason_lspconfig = require("mason-lspconfig")
+--
+--			local protocol = require("vim.lsp.protocol")
+--
+--			local on_attach = function(client, bufnr)
+--				-- format on save
+--				if client.server_capabilities.documentFormattingProvider then
+--					vim.api.nvim_create_autocmd("BufWritePre", {
+--						group = vim.api.nvim_create_augroup("Format", { clear = true }),
+--						buffer = bufnr,
+--						callback = function()
+--							vim.lsp.buf.format()
+--						end,
+--					})
+--				end
+--			end
+--
+--			local capabilities = require("cmp_nvim_lsp").default_capabilities()
+--
+--			mason_lspconfig.setup_handlers({
+--				function(server)
+--					nvim_lsp[server].setup({
+--						capabilities = capabilities,
+--					})
+--				end,
+--				["tsserver"] = function()
+--					nvim_lsp["tsserver"].setup({
+--						on_attach = on_attach,
+--						capabilities = capabilities,
+--					})
+--				end,
+--				["cssls"] = function()
+--					nvim_lsp["cssls"].setup({
+--						on_attach = on_attach,
+--						capabilities = capabilities,
+--					})
+--				end,
+--				["tailwindcss"] = function()
+--					nvim_lsp["tailwindcss"].setup({
+--						on_attach = on_attach,
+--						capabilities = capabilities,
+--					})
+--				end,
+--				["html"] = function()
+--					nvim_lsp["html"].setup({
+--						on_attach = on_attach,
+--						capabilities = capabilities,
+--					})
+--				end,
+--				["jsonls"] = function()
+--					nvim_lsp["jsonls"].setup({
+--						on_attach = on_attach,
+--						capabilities = capabilities,
+--					})
+--				end,
+--				["eslint"] = function()
+--					nvim_lsp["eslint"].setup({
+--						on_attach = on_attach,
+--						capabilities = capabilities,
+--					})
+--				end,
+--				["pyright"] = function()
+--					nvim_lsp["pyright"].setup({
+--						on_attach = on_attach,
+--						capabilities = capabilities,
+--					})
+--				end,
+--			})
+--		end,
+--	},
+--}
