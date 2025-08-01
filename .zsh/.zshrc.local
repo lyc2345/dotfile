@@ -1,0 +1,230 @@
+# if you can find out where call zsh, not iterm default shell, terminal default shell...
+# follow oh-my-zsh instruction by chsh change default shell
+# $ chsh -s /bin/zsh
+
+# If you come from bash you might have to change your $PATH.
+# export PATH=$HOME/bin:/usr/local/bin:$PATH
+source ~/.zsh/.path.zsh
+#
+
+# Path to your oh-my-zsh installation.
+export ZSH="$HOME/.dotfile/ohmyzsh"
+
+# Set list of themes to load
+# Setting this variable when ZSH_THEME=random
+# cause zsh load theme from this variable instead of
+# looking in ~/.oh-my-zsh/themes/
+# An empty array have no effect
+# ZSH_THEME="agnoster"
+
+# Set name of the theme to load. Optionally, if you set this to "random"
+# it'll load a random theme each time that oh-my-zsh is loaded.
+# See https://github.com/robbyrussell/oh-my-zsh/wiki/Themes
+# ZSH_THEME_RANDOM_CANDIDATES=( "robbyrussell" "agnoster" )
+#
+# zsh agnoster default setting from:
+# now using level9k so no need these prompt code
+# prompt_context() {
+#   if [[ "$USER" != "$DEFAULT_USER" || -n "$SSH_CLIENT" ]]; then
+#     prompt_segment black default "%(!.%{%F{yellow}%}.)$USER"
+#   fi
+# }
+#
+## Do not show name@hostname
+#  prompt_dir() {
+#    prompt_segment blue black '%c'
+#  }
+
+# For zsh syntax-highlighting
+#
+# Fish shell like syntax highlighting for Zsh
+#
+# https://caiqiqi.github.io/2018/09/09/使用zsh插件zsh-syntax-highlighting高亮你的zsh可用命令/
+#
+# @link: http://github.com/zsh-users/zsh-syntax-highlighting
+#
+# Note the source command must be at the end of ~/.zshrc.
+#
+#source ./zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+#source ./history-substring-search/history-substring-search.zsh
+ZSH_HIGHLIGHT_HIGHLIGHTERS=(main brackets pattern cursor)
+ZSH_HIGHLIGHT_PATTERNS=('rm -rf *' 'fg=white,bold,bg=red') # To have commands starting with `rm -rf` in red:
+
+# 258 color palettes -> https://jonasjacek.github.io/colors/
+ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE='fg=247'
+
+# Uncomment the following line to use case-sensitive completion.
+# CASE_SENSITIVE="true"
+
+# Uncomment the following line to use hyphen-insensitive completion. Case
+# sensitive completion must be off. _ and - will be interchangeable.
+# HYPHEN_INSENSITIVE="true"
+
+# Uncomment the following line to disable bi-weekly auto-update checks.
+# DISABLE_AUTO_UPDATE="true"
+
+# Uncomment the following line to change how often to auto-update (in days).
+# export UPDATE_ZSH_DAYS=13
+
+# Uncomment the following line to disable colors in ls.
+# DISABLE_LS_COLORS="true"
+
+# Uncomment the following line to disable auto-setting terminal title.
+# DISABLE_AUTO_TITLE="true"
+
+# Uncomment the following line to enable command auto-correction.
+ENABLE_CORRECTION="false"
+
+# Uncomment the following line to display red dots whilst waiting for completion.
+# COMPLETION_WAITING_DOTS="true"
+
+# Uncomment the following line if you want to disable marking untracked files
+# under VCS as dirty. This makes repository status check for large repositories
+# much, much faster.
+# DISABLE_UNTRACKED_FILES_DIRTY="true"
+
+# Uncomment the following line if you want to change the command execution time
+# stamp shown in the history command output.
+# The optional three formats: "mm/dd/yyyy"|"dd.mm.yyyy"|"yyyy-mm-dd"
+# HIST_STAMPS="mm/dd/yyyy"
+
+# Would you like to use another custom folder than $ZSH/custom?
+# ZSH_CUSTOM=/path/to/new-custom-folder
+
+# Which plugins would you like to load? (plugins can be found in ~/.oh-my-zsh/plugins/*)
+# Custom plugins may be added to ~/.oh-my-zsh/custom/plugins/
+# Example format: plugins=(rails git textmate ruby lighthouse)
+# Add wisely, as too many plugins slow down shell startup.
+plugins=(
+  fzf
+  git
+  #git-flow
+  tig
+  brew
+  pip # for python
+  gem # for ruby
+  #autojump
+  fasd
+  macos
+  command-not-found # for giving more information about missing command
+  #you-should-use
+  tmux
+  tmuxinator
+  #zeus # for RoR preload rails app so that your normal deelopment task such as `console`, `server`, generate`, and spect/tests take **less than one second**
+  zsh-completions
+  zsh-syntax-highlighting
+  zsh-autosuggestions
+  #zsh-git-prompt
+  history-substring-search
+  zsh-apple-touchbar
+  #extract
+  history
+  encode64
+  docker
+  pyenv
+  pylint
+  python
+  rbenv
+  #rvm
+  cp
+  #fastfile
+  vi-mode
+  xcode
+  z
+  #nvm
+  kubectl
+)
+
+# !!! this should after plugins, so that plugins should know the PATH !!!
+source $ZSH/oh-my-zsh.sh
+
+# User configuration
+
+# export MANPATH="/usr/local/man:$MANPATH"
+
+# You may need to manually set your language environment
+export LC_ALL=en_US.UTF-8
+export LANG=en_US.UTF-8
+
+# Compilation flags
+# export ARCHFLAGS="-arch x86_64"
+
+# ssh
+# export SSH_KEY_PATH="~/.ssh/rsa_id"
+
+# Set personal aliases, overriding those provided by oh-my-zsh libs,
+# plugins, and themes. Aliases can be placed here, though oh-my-zsh
+# users are encouraged to define aliases within the ZSH_CUSTOM folder.
+# For a full list of active aliases, run `alias`.
+
+# enable debug mode for git status
+GITSTATUS_LOG_LEVEL=DEBUG
+
+# Boolean Operators
+#!	This is logical negation. This inverts a true condition into false and vice versa.	[ ! false ] is true.
+#-o	This is logical OR. If one of the operands is true, then the condition becomes true.	[ $a -lt 20 -o $b -gt 100 ] is true.
+#-a	This is logical AND. If both the operands are true, then the condition becomes true otherwise false.	[ $a -lt 20 -a $b -gt 100 ] is false.
+
+# String Operators
+#=	Checks if the value of two operands are equal or not; if yes, then the condition becomes true.	[ $a = $b ] is not true.
+#!=	Checks if the value of two operands are equal or not; if values are not equal then the condition becomes true.	[ $a != $b ] is true.
+#-z	Checks if the given string operand size is zero; if it is zero length, then it returns true.	[ -z $a ] is not true.
+#-n	Checks if the given string operand size is non-zero; if it is nonzero length, then it returns true.	[ -n $a ] is not false.
+#str	Checks if str is not the empty string; if it is empty, then it returns false.	[ $a ] is not false.
+
+# File Test Operators
+#-b file	Checks if file is a block special file; if yes, then the condition becomes true.	[ -b $file ] is false.
+#-c file	Checks if file is a character special file; if yes, then the condition becomes true.	[ -c $file ] is false.
+#-d file	Checks if file is a directory; if yes, then the condition becomes true.	[ -d $file ] is not true.
+#-f file	Checks if file is an ordinary file as opposed to a directory or special file; if yes, then the condition becomes true.	[ -f $file ] is true.
+#-g file	Checks if file has its set group ID (SGID) bit set; if yes, then the condition becomes true.	[ -g $file ] is false.
+#-k file	Checks if file has its sticky bit set; if yes, then the condition becomes true.	[ -k $file ] is false.
+#-p file	Checks if file is a named pipe; if yes, then the condition becomes true.	[ -p $file ] is false.
+#-t file	Checks if file descriptor is open and associated with a terminal; if yes, then the condition becomes true.	[ -t $file ] is false.
+#-u file	Checks if file has its Set User ID (SUID) bit set; if yes, then the condition becomes true.	[ -u $file ] is false.
+#-r file	Checks if file is readable; if yes, then the condition becomes true.	[ -r $file ] is true.
+#-w file	Checks if file is writable; if yes, then the condition becomes true.	[ -w $file ] is true.
+#-x file	Checks if file is executable; if yes, then the condition becomes true.	[ -x $file ] is true.
+#-s file	Checks if file has size greater than 0; if yes, then condition becomes true.	[ -s $file ] is true.
+#-e file	Checks if file exists; is true even if file is a directory but exists.	[ -e $file ] is true.
+
+
+# required by zsh-completions
+# nfasd auto complete for neovim
+# see http://stackoverflow.com/questions/3249432/i-have-a-bash-tab-completion-script-is-there-a-simple-way-to-use-it-from-zsh
+# -U: Ignore any aliases when loading a function like compinit or bashcompinit
+# +X: Just load the named function fow now and don't execute it
+#autoload -U +X compinit && compinit
+#autoload -U compinit && compinit
+# python argcomplete doesn't need bashcompinit anymore
+# autoload -U +X bashcompinit && bashcompinit
+
+#
+setopt no_nomatch
+
+# # 你不需要cd了，直接敲目录名字就能进入
+setopt autocd
+
+# # 你在任何地方都可以直接进入你的home目录下的任意目录了
+cdpath=(~ ~/Dropbox)
+
+# iTerm {{{
+#if [[ "$TERM" == "xterm" ]]; then
+#  TERM=xterm-256color
+#fi
+# https://unix.stackexchange.com/questions/139082/zsh-set-term-screen-256color-in-tmux-but-xterm-256color-without-tmux
+if [[ $TMUX = "" ]]; then
+  export TERM="xterm-256color"
+fi
+
+#test -e "${HOME}/.iterm2_shell_integration.zsh" && source "${HOME}/.iterm2_shell_integration.zsh"
+
+# stop the annoying autocompletion beep sound
+setopt NO_LIST_BEEP
+
+
+source ~/.zsh/.alias.zsh
+source ~/.zsh/.init.zsh
+
+#show_yourself
+
