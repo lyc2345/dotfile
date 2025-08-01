@@ -1,0 +1,8 @@
+
+exe "source" "~/.vim/general.vim"
+exe "source" "~/.vim/colorscheme.vim"
+exe "source" "~/.vim/plugins.setup.vim"
+exe "source" "~/.vim/shortcutmap.vim"
+exe "source" "~/.vim/keymap.vim"
+exe "source" "~/.vim/ycm.vim"
+
