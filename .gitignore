@@ -1,0 +1,77 @@
+# Could just force-add these files and leave this as '*', but this way I have a
+# nice explicit list for documentation's sake.
+
+# Ignore everything by default.
+
+**/.DS_Store
+
+**/.history
+
+.gitconfig
+
+trash/*
+
+
+# But not my dumb little setup script.
+
+# Bash stuff (profile just sources bashrc, since it's the only thing sourced
+# when a shell is a login shell).
+**/.*.swp
+.bash_history
+.bash_local
+.bash_logout
+
+# Mercurial config (yup, stored in a Git repository. Take that, hg!)
+!.hgrc
+
+# Virtualenvwrapper hooks
+.virtualenvs
+
+# Vim settings
+.vim/.DS_Store
+.vim/.netrwhist
+.vim/plugged
+.vim/bundle
+.vim/vim-addons
+.vim/pack
+.vim-session.vim
+
+.config/*
+
+.vscode/extensions
+
+# Invoke customization (eg for nixos run.shell loc)
+!.invoke.yml
+
+# GPG settings (does NOT include keychain etc!)
+!.gnupg
+!.gnupg/*.conf
+
+# Rust!
+!.cargo
+!.cargo/config.toml
+
+# 1Password CLI hooks
+!.config/1Password
+!.config/1Password/*
+!.config/1Password/ssh/
+!.config/1Password/ssh/*
+
+.docker
+.emacs.d/.cask
+
+.oh-my-zsh
+powerlevel10k
+
+sourcery/*
+github-copilot/*
+
+.gnupg
+
+.netrc
+
+.fasd
+
+.aws/*
+.boto
+
