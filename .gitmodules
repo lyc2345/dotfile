@@ -13,9 +13,9 @@
 [submodule "dircolors"]
 	path = dircolors
 	url = https://github.com/nordtheme/dircolors.git
-[submodule ".config/wezterm"]
-	path = .config/wezterm
+[submodule "wezterm"]
+	path = wezterm
 	url = https://github.com/lyc2345/wezterm-config.git
-[submodule ".config/nvim"]
-	path = .config/nvim
+[submodule "nvim"]
+	path = nvim
 	url = https://github.com/lyc2345/LazyVim.git
