@@ -1,0 +1,94 @@
+# Could just force-add these files and leave this as '*', but this way I have a
+# nice explicit list for documentation's sake.
+
+# Ignore everything by default.
+
+**/.DS_Store
+
+**/.history
+
+.gitconfig
+
+trash/*
+
+
+# But not my dumb little setup script.
+
+# Bash stuff (profile just sources bashrc, since it's the only thing sourced
+# when a shell is a login shell).
+**/.*.swp
+.bash_history
+.bash_local
+.bash_logout
+
+# Virtualenvwrapper hooks
+.virtualenvs
+
+# Vim settings
+.vim/.DS_Store
+.vim/.netrwhist
+.vim/plugged
+.vim/bundle
+.vim/vim-addons
+.vim/pack
+.vim-session.vim
+
+.config/*
+
+.vscode/extensions
+
+# Rust!
+!.cargo
+!.cargo/config.toml
+
+# 1Password CLI hooks
+!.config/1Password
+!.config/1Password/*
+!.config/1Password/ssh/
+!.config/1Password/ssh/*
+
+.emacs.d/.cask
+
+sourcery/*
+github-copilot/*
+
+.gnupg
+
+.netrc
+
+.fasd
+
+.aws/*
+.boto
+
+.zsh/.ai.local
+
+# Environment / secrets
+.env
+.env.*
+.envrc
+*.pem
+*.key
+*.p12
+*.pfx
+*_rsa
+*_rsa.pub
+*_ed25519
+*_ed25519.pub
+
+# Package manager credentials
+.npmrc
+.pypirc
+.gem/credentials
+
+# Cloud credentials
+.docker/config.json
+.kube/config
+.kube/
+.gcloud/
+.azure/
+
+# Claude Code - keep skills and prompts private
+.claude
+.claude-skills
+.claude/*
