@@ -5,6 +5,9 @@
 inoremap <c-n> <nop>
 inoremap <c-p> <nop>
 
+" Which key
+nnoremap <silent> <leader> :WhichKey '<Space>'<CR>
+
 " Visual {{{
 
 " Visual mode pressing * or # searches for the current selection
