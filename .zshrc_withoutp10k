@@ -1,0 +1,66 @@
+# A set of vim, zsh, git and tmux configuration files
+# Auther: thoughtbot
+# https://github.com/thoughtbot/dotfiles
+#
+# load custom executable functions
+#for function in ~/.zsh/functions/*; do
+#  source $function
+#done
+
+# extra files in ~/.zsh/configs/pre , ~/.zsh/configs , and ~/.zsh/configs/post
+# these are loaded first, second, and third, respectively.
+_load_settings() {
+  #_dir="$1"
+  # -d: directory
+  #if [ -d "$_dir" ]; then
+  #  if [ -d "$_dir/pre" ]; then
+  #    for config in "$_dir"/pre/**/*~*.zwc(N-.); do
+  #      . $config
+  #    done
+  #  fi
+
+  #  for config in "$_dir"/**/*(N-.); do
+  #    case "$config" in
+  #      "$_dir"/(pre|post)/*|*.zwc)
+  #        :
+  #        ;;
+  #      *)
+  #        . $config
+  #        ;;
+  #    esac
+  #  done
+
+  #  if [ -d "$_dir/post" ]; then
+  #    for config in "$_dir"/post/**/*~*.zwc(N-.); do
+  #      . $config
+  #    done
+  #  fi
+  #fi
+  #
+  color_title='\x1b[2;31m'
+  color_default='\x1b[1;37m'
+  color_highlight='\x1b[33;1m'
+
+  echo "${color_title}start loading zshrc...${color_default}"
+
+  _dir="$1"
+  # -h: symbolic link
+  if [ -d "$_dir" ]; then
+    for zshfile in "$_dir"/*; do
+      echo "loaded config: ${color_highlight}$zshfile${color_default}"
+      source $zshfile
+    done
+  fi
+}
+
+_load_local_setting() {
+    color_highlight='\x1b[34;1m'
+    # Local config first
+    echo "loaded config: ${color_highlight}$(pwd)/.zsh/.zsh.local${color_default}"
+    [[ -f ~/.zsh/.zshrc.local ]] && source ~/.zsh/.zshrc.local
+}
+
+_load_settings "$HOME/.zsh"
+
+_load_local_setting
+
