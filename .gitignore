@@ -60,8 +60,6 @@ trash/*
 .docker
 .emacs.d/.cask
 
-.oh-my-zsh
-powerlevel10k
 
 sourcery/*
 github-copilot/*
