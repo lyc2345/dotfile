@@ -1,0 +1,19 @@
+#! /bin/bash
+osascript <<EOD
+tell application "Spotify"
+    if it is running then
+        if player state is stopped then
+            --
+        else
+            set trackname to name of current track
+            set artistname to artist of current track
+            set albumname to album of current track
+            if player state is playing then
+                set current to "🎶 " & artistname & " - " & trackname
+            else if player state is paused then
+                --
+            end if
+        end if
+    end if
+end tell
+EOD
