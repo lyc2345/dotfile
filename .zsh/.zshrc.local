@@ -116,7 +116,7 @@ plugins=(
   zsh-autosuggestions
   #zsh-git-prompt
   history-substring-search
-  zsh-apple-touchbar
+  #zsh-apple-touchbar
   #extract
   history
   encode64
