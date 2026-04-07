@@ -39,7 +39,7 @@ Plugin 'mileszs/ack.vim' " search tool
 " snippet
 "Plugin 'SirVer/ultisnips'
 " SnipMate friend
-"Plugin 'MarcWeber/vim-addon-mw-utils'
+Plugin 'MarcWeber/vim-addon-mw-utils'
 Plugin 'tomtom/tlib_vim'
 Plugin 'garbas/vim-snipmate'
 

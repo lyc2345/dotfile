@@ -1,4 +1,3 @@
-"
 " put this line first in ~/.vimrc
 set nocompatible | filetype indent plugin on | syn on
 
@@ -15,7 +14,8 @@ fun! SetupVAM()
   " let c.auto_install = 0
   let &rtp.=(empty(&rtp)?'':',').c.plugin_root_dir.'/vim-addon-manager'
   if !isdirectory(c.plugin_root_dir.'/vim-addon-manager/autoload')
-    execute '!git clone --depth=1 git://github.com/MarcWeber/vim-addon-manager '
+    execute '!git clone --depth=1'
+        \       'https://github.com/MarcWeber/vim-addon-manager'
         \       shellescape(c.plugin_root_dir.'/vim-addon-manager', 1)
   endif
 
@@ -36,3 +36,5 @@ call SetupVAM()
 " OPTION 3: Create a file ~/.vim-scripts putting a PLUGIN_NAME into each line (# for comments)
 " See lazy loading plugins section in README.md for details
 "call vam#Scripts('~/.vim-scripts', {'tag_regex': '.*'})
+
+
