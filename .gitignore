@@ -36,8 +36,6 @@ trash/*
 .vim/pack
 .vim-session.vim
 
-.config/*
-
 .vscode/extensions
 
 # Invoke customization (eg for nixos run.shell loc)
@@ -51,13 +49,18 @@ trash/*
 !.cargo
 !.cargo/config.toml
 
+.config/*
+
 # 1Password CLI hooks
 !.config/1Password
 !.config/1Password/*
 !.config/1Password/ssh/
 !.config/1Password/ssh/*
 
-.docker
+!.config/nvim
+!.config/wezterm
+
+mdocker
 .emacs.d/.cask
 
 
