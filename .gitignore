@@ -33,13 +33,13 @@ trash/*
 .vim/pack
 .vim-session.vim
 
-.config/*
-
 .vscode/extensions
 
 # Rust!
 !.cargo
 !.cargo/config.toml
+
+.config/*
 
 # 1Password CLI hooks
 !.config/1Password
