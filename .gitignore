@@ -76,3 +76,4 @@ github-copilot/*
 .aws/*
 .boto
 
+.zsh/.ai.local

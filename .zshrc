@@ -67,6 +67,7 @@ _load_local_setting() {
     # Local config first
     echo "loaded user config: ${color_highlight}$HOME/.zsh/.zshrc.local${color_default}"
     [[ -f ~/.zsh/.zshrc.local ]] && source ~/.zsh/.zshrc.local
+    [[ -f ~/.zsh/.ai.local ]] && source ~/.zsh/.ai.local
 }
 
 
