@@ -9,26 +9,10 @@ param(
 $ErrorActionPreference = "Stop"
 
 $scriptDir = Split-Path -Parent $MyInvocation.MyCommand.Path
-$dotfilesRoot = Split-Path -Parent $scriptDir
+. (Join-Path $scriptDir "windows-links.ps1")
 
-$linkGroups = [ordered]@{
-    Home = @(
-        @{ Source = ".tigrc"; Target = Join-Path $env:USERPROFILE ".tigrc"; Kind = "File" },
-        @{ Source = ".gitmessage"; Target = Join-Path $env:USERPROFILE ".gitmessage"; Kind = "File" },
-        @{ Source = ".vimrc"; Target = Join-Path $env:USERPROFILE ".vimrc"; Kind = "File" },
-        @{ Source = ".vsvimrc"; Target = Join-Path $env:USERPROFILE ".vsvimrc"; Kind = "File" }
-    )
-    Config = @(
-        @{ Source = "nvim"; Target = Join-Path $env:LOCALAPPDATA "nvim"; Kind = "Directory" },
-        @{ Source = "wezterm"; Target = Join-Path $env:USERPROFILE ".config\wezterm"; Kind = "Directory" }
-    )
-    Windows = @(
-        @{ Source = ".windows\.bashrc"; Target = Join-Path $env:USERPROFILE ".bashrc"; Kind = "File" },
-        @{ Source = ".windows\git-prompt.bash"; Target = Join-Path $env:USERPROFILE "git-prompt.sh"; Kind = "File" },
-        @{ Source = ".windows\git-plugin.bash"; Target = Join-Path $env:USERPROFILE "git-plugin.bash"; Kind = "File" },
-        @{ Source = ".windows\git-completion.bash"; Target = Join-Path $env:USERPROFILE "git-completion.bash"; Kind = "File" }
-    )
-}
+$dotfilesRoot = Get-DotfilesRoot
+$linkGroups = Get-DotfileLinkGroups
 
 function Write-Step {
     param([string]$Message)
