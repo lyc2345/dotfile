@@ -15,11 +15,12 @@ $linkGroups = [ordered]@{
     Home = @(
         @{ Source = ".tigrc"; Target = Join-Path $env:USERPROFILE ".tigrc"; Kind = "File" },
         @{ Source = ".gitmessage"; Target = Join-Path $env:USERPROFILE ".gitmessage"; Kind = "File" },
-        @{ Source = ".vimrc"; Target = Join-Path $env:USERPROFILE ".vimrc"; Kind = "File" }
+        @{ Source = ".vimrc"; Target = Join-Path $env:USERPROFILE ".vimrc"; Kind = "File" },
+        @{ Source = ".vsvimrc"; Target = Join-Path $env:USERPROFILE ".vsvimrc"; Kind = "File" }
     )
     Config = @(
-        @{ Source = ".config\nvim"; Target = Join-Path $env:LOCALAPPDATA "nvim"; Kind = "Directory" },
-        @{ Source = ".config\wezterm"; Target = Join-Path $env:USERPROFILE ".config\wezterm"; Kind = "Directory" }
+        @{ Source = "nvim"; Target = Join-Path $env:LOCALAPPDATA "nvim"; Kind = "Directory" },
+        @{ Source = "wezterm"; Target = Join-Path $env:USERPROFILE ".config\wezterm"; Kind = "Directory" }
     )
     Windows = @(
         @{ Source = ".windows\.bashrc"; Target = Join-Path $env:USERPROFILE ".bashrc"; Kind = "File" },
@@ -62,7 +63,8 @@ function New-Link {
         }
     }
 
-    if (Test-Path $Target) {
+    $existingTarget = Get-Item -LiteralPath $Target -Force -ErrorAction SilentlyContinue
+    if ($existingTarget) {
         Write-Host "Skip existing target: $Target" -ForegroundColor Yellow
         return
     }

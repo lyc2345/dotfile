@@ -2,25 +2,42 @@
 
 set -euo pipefail
 
-SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-DOTFILES_ROOT="$(cd "$SCRIPT_DIR/.." && pwd)"
-DST="$HOME"
+link_targets=(
+  "$HOME/.bash_profile"
+  "$HOME/.bashrc"
+  "$HOME/.fzf"
+  "$HOME/.gitmessage"
+  "$HOME/.hammerspoon"
+  "$HOME/.homebrew"
+  "$HOME/.mackup.cfg"
+  "$HOME/.tigrc"
+  "$HOME/.tmux"
+  "$HOME/.tmux.conf"
+  "$HOME/.vim"
+  "$HOME/.vimrc"
+  "$HOME/.vsvimrc"
+  "$HOME/.xvimrc"
+  "$HOME/.zprofile"
+  "$HOME/.zsh"
+  "$HOME/.zshrc"
+  "$HOME/.zshrc_withoutp10k"
+  "$HOME/dircolors"
+  "$HOME/iterm2-color-schemes"
+  "$HOME/ohmyzsh"
+  "$HOME/powerlevel10k"
+  "$HOME/.config/nvim"
+  "$HOME/.config/wezterm"
+)
 
-for f in "$DOTFILES_ROOT"/* "$DOTFILES_ROOT"/.[^.]*; do
-    name="$(basename "$f")"
+for target in "${link_targets[@]}"; do
+  if [[ ! -L "$target" ]]; then
+    echo "skip non-symlink: '$target'"
+    continue
+  fi
 
-    if [[ "$name" == ".git" || "$name" == "install-scripts" || "$name" == "install-package-scripts" ]]; then
-        continue
-    fi
-
-    if [[ "$name" == ".DS_Store" ]]; then
-        continue
-    fi
-
-    target="$DST/$name"
-    if unlink "$target" 2> /dev/null; then
-        echo "unlink '$target'"
-    else
-        echo "unlink: '$target' not found"
-    fi
+  if unlink "$target" 2> /dev/null; then
+    echo "unlink '$target'"
+  else
+    echo "unlink: '$target' not found"
+  fi
 done

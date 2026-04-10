@@ -57,9 +57,6 @@ trash/*
 !.config/1Password/ssh/
 !.config/1Password/ssh/*
 
-!.config/nvim
-!.config/wezterm
-
 mdocker
 .emacs.d/.cask
 
