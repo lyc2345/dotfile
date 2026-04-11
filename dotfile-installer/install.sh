@@ -4,6 +4,8 @@ set -euo pipefail
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 DOTFILES_ROOT="$(cd "$SCRIPT_DIR/.." && pwd)"
+CONFIG_DIR="$HOME/.config"
+LEGACY_CONFIG_LINK="$DOTFILES_ROOT/.config"
 
 link_entries=(
   ".bash_profile|$HOME/.bash_profile"
@@ -31,6 +33,32 @@ link_entries=(
   "nvim|$HOME/.config/nvim"
   "wezterm|$HOME/.config/wezterm"
 )
+
+ensure_config_dir() {
+  if [[ -L "$CONFIG_DIR" ]]; then
+    local target
+    target="$(readlink "$CONFIG_DIR")"
+
+    if [[ "$target" == "$LEGACY_CONFIG_LINK" ]]; then
+      unlink "$CONFIG_DIR"
+      mkdir -p "$CONFIG_DIR"
+      echo "replaced legacy ~/.config symlink with real directory"
+      return
+    fi
+
+    echo "skip replacing linked ~/.config: $CONFIG_DIR -> $target"
+    return
+  fi
+
+  if [[ -e "$CONFIG_DIR" && ! -d "$CONFIG_DIR" ]]; then
+    echo "skip invalid ~/.config target: $CONFIG_DIR exists but is not a directory"
+    return
+  fi
+
+  mkdir -p "$CONFIG_DIR"
+}
+
+ensure_config_dir
 
 for entry in "${link_entries[@]}"; do
   source_rel="${entry%%|*}"

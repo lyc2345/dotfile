@@ -28,6 +28,56 @@ function Get-SelectedGroups {
     return $Groups
 }
 
+function Get-NormalizedPath {
+    param([Parameter(Mandatory = $true)][string]$Path)
+
+    try {
+        return (Resolve-Path -LiteralPath $Path -ErrorAction Stop).Path
+    }
+    catch {
+        return [System.IO.Path]::GetFullPath($Path)
+    }
+}
+
+function Ensure-UserConfigDirectory {
+    $configDir = Join-Path $env:USERPROFILE ".config"
+    $configItem = Get-Item -LiteralPath $configDir -Force -ErrorAction SilentlyContinue
+    $legacyConfigPath = Join-Path $dotfilesRoot ".config"
+
+    if (-not $configItem) {
+        if (-not $WhatIf) {
+            New-Item -ItemType Directory -Force -Path $configDir | Out-Null
+        }
+        return
+    }
+
+    if ($configItem.LinkType -in @("Junction", "SymbolicLink")) {
+        $targets = @($configItem.Target)
+        foreach ($target in $targets) {
+            $candidate = [string]$target
+            if (-not [System.IO.Path]::IsPathRooted($candidate)) {
+                $candidate = Join-Path $configItem.DirectoryName $candidate
+            }
+
+            if ([string]::Equals((Get-NormalizedPath $candidate), (Get-NormalizedPath $legacyConfigPath), [System.StringComparison]::OrdinalIgnoreCase)) {
+                Write-Host "Replacing legacy .config link with a real directory: $configDir" -ForegroundColor Yellow
+                if (-not $WhatIf) {
+                    Remove-Item -LiteralPath $configDir -Force
+                    New-Item -ItemType Directory -Force -Path $configDir | Out-Null
+                }
+                return
+            }
+        }
+
+        Write-Host "Skip replacing linked .config: $configDir" -ForegroundColor Yellow
+        return
+    }
+
+    if (-not $configItem.PSIsContainer) {
+        throw "$configDir exists but is not a directory."
+    }
+}
+
 function New-Link {
     param(
         [Parameter(Mandatory = $true)][string]$Source,
@@ -106,7 +156,7 @@ function Show-Summary {
 }
 
 Show-Summary
-
+Ensure-UserConfigDirectory
 Install-Links
 
 Write-Step "Completed"
