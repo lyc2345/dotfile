@@ -74,3 +74,8 @@ github-copilot/*
 .boto
 
 .zsh/.ai.local
+
+# Claude Code - keep skills and prompts private
+.claude
+.claude-skills
+.claude/*
