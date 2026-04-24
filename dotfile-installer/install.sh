@@ -70,6 +70,12 @@ for entry in "${link_entries[@]}"; do
     continue
   fi
 
+  # Guard against circular symlinks caused by $HOME pointing inside DOTFILES_ROOT
+  if [[ "$target" == "$DOTFILES_ROOT"* ]]; then
+    echo "skip dangerous target inside dotfiles root: $target"
+    continue
+  fi
+
   mkdir -p "$(dirname "$target")"
 
   if ln -s "$source" "$target" 2> /dev/null; then
