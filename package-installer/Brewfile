@@ -1,0 +1,42 @@
+# CLI tools
+brew "coreutils"
+brew "git"
+brew "gh"
+brew "jq"
+brew "bat"
+brew "fzf"
+brew "fasd"
+brew "tig"
+brew "thefuck"
+brew "autojump"
+brew "ack"
+
+# Shell
+brew "zsh"
+
+# Language version managers
+brew "pyenv"
+brew "rbenv"
+brew "fnm"
+
+# Containers
+brew "docker-compose"
+
+# Editors
+brew "neovim"
+brew "confd"
+
+# Fonts
+cask "font-sauce-code-pro-nerd-font"
+
+# Terminal & editors
+cask "wezterm"
+cask "visual-studio-code"
+
+# macOS tools
+cask "hammerspoon"
+cask "karabiner-elements"
+
+# AI
+cask "claude"
+cask "claude-code"
