@@ -49,6 +49,9 @@ trash/*
 
 .emacs.d/.cask
 
+# Karabiner auto-generated backups
+karabiner/automatic_backups
+
 sourcery/*
 github-copilot/*
 

@@ -32,6 +32,7 @@ link_entries=(
   "powerlevel10k|$HOME/powerlevel10k"
   "nvim|$HOME/.config/nvim"
   "wezterm|$HOME/.config/wezterm"
+  "karabiner|$HOME/.config/karabiner"
 )
 
 ensure_config_dir() {
@@ -73,6 +74,12 @@ for entry in "${link_entries[@]}"; do
   # Guard against circular symlinks caused by $HOME pointing inside DOTFILES_ROOT
   if [[ "$target" == "$DOTFILES_ROOT"* ]]; then
     echo "skip dangerous target inside dotfiles root: $target"
+    continue
+  fi
+
+  # Guard against placing symlink inside an existing real directory
+  if [[ -d "$target" && ! -L "$target" ]]; then
+    echo "skip real directory (remove manually first): $target"
     continue
   fi
 
