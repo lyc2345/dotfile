@@ -1,9 +1,9 @@
 
 # for editor
-[ -n gsed ] && alias vi=vim
+alias vi=vim
 
-# for better sed
-[ -n gsed ] && alias sed=gsed
+# for better sed (only alias if gsed is actually installed)
+command -v gsed &>/dev/null && alias sed=gsed
 
 # rm always ask
 alias rm -rf='rm -irf'
