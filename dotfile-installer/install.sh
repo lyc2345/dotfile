@@ -12,6 +12,7 @@ link_entries=(
   ".bashrc|$HOME/.bashrc"
   ".fzf|$HOME/.fzf"
   ".gitmessage|$HOME/.gitmessage"
+  "git|$HOME/.config/git"
   ".hammerspoon|$HOME/.hammerspoon"
   ".homebrew|$HOME/.homebrew"
   ".mackup.cfg|$HOME/.mackup.cfg"

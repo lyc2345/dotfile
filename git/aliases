@@ -1,0 +1,27 @@
+[alias]
+  co      = checkout
+  br      = branch
+  ci      = commit
+  cm      = commit -m "$*"
+  s       = status
+  al      = add .
+  a       = add
+  vl      = gitk --all&
+  unstage = reset HEAD --
+  last    = log -l HEAD
+  pu      = push
+  fc      = fetch
+  pl      = pull
+  mg      = merge
+  rb      = rebase
+  d       = diff
+  df      = "diff --no-index"
+  dt      = difftool
+  cp      = cherrypick
+  sb      = submodule
+  wt      = worktree
+  bi      = bisect
+  fix     = "!f() { vim -p `git diff --name-only`; }; f"
+  nfix    = "!f() { nvim `git diff --name-only`; }; f"
+  ll      = "log --pretty=format:'%h %ad | %s%d [%Cgreen%an%Creset]' --graph --date=short"
+
