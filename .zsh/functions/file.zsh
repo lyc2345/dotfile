@@ -54,9 +54,9 @@ pathmunge () {
   fi
 }
 
-# clean up duplicate path
+# clean up duplicate path (pure zsh, no external commands)
 clean_duplicate_paths() {
-  PATH=$(echo $PATH | tr ':' '\n' | perl -lne 'chomp; print unless $k{$_}; $k{$_}++' | tr '\n' ':' | sed 's/:$//')
+  typeset -U path
 }
 
 # Functions to help us manage paths.  Second argument is the name of the
