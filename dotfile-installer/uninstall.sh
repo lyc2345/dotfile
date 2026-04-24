@@ -27,6 +27,7 @@ link_targets=(
   "$HOME/powerlevel10k"
   "$HOME/.config/nvim"
   "$HOME/.config/wezterm"
+  "$HOME/.config/karabiner"
 )
 
 for target in "${link_targets[@]}"; do

@@ -83,6 +83,13 @@ for entry in "${link_entries[@]}"; do
     continue
   fi
 
+  # Guard against re-running over an existing symlink — ln -s would silently
+  # place a new symlink inside the symlinked directory instead of failing
+  if [[ -L "$target" ]]; then
+    echo "symlink: '$target' exists"
+    continue
+  fi
+
   mkdir -p "$(dirname "$target")"
 
   if ln -s "$source" "$target" 2> /dev/null; then
