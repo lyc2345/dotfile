@@ -19,3 +19,6 @@
 [submodule "nvim"]
 	path = nvim
 	url = https://github.com/lyc2345/LazyVim.git
+[submodule "fasd"]
+	path = fasd
+	url = https://github.com/whjvenyl/fasd.git
