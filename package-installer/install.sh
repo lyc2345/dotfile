@@ -56,5 +56,32 @@ bash "$SCRIPT_DIR/install-language-runtimes.sh"
 header "Zsh plugins"
 bash "$SCRIPT_DIR/install-zsh-plugins.sh"
 
+# ---------------------------------------------------------------------------
+# 6. Binary tools
+# ---------------------------------------------------------------------------
+header "Binary tools"
+TOOLS_DIR="$DOTFILES_ROOT/tools"
+mkdir -p "$TOOLS_DIR"
+
+SLACK_TERM="$TOOLS_DIR/slack-term-darwin-amd64"
+if [[ -f "$SLACK_TERM" ]]; then
+  skip "slack-term already present"
+else
+  echo "  Downloading slack-term..."
+  curl -fsSL -o "$SLACK_TERM" \
+    https://github.com/jpbruinsslot/slack-term/releases/download/v0.5.0/slack-term-darwin-amd64
+  chmod +x "$SLACK_TERM"
+  ok "slack-term downloaded"
+fi
+
+# Expose tools dir on PATH (append to ~/.zshrc if not already present)
+TOOLS_PATH_LINE="export PATH=\"$TOOLS_DIR:\$PATH\""
+if grep -qF "$TOOLS_DIR" "$HOME/.zshrc" 2>/dev/null; then
+  skip "tools PATH already in ~/.zshrc"
+else
+  echo "$TOOLS_PATH_LINE" >> "$HOME/.zshrc"
+  ok "added tools to PATH in ~/.zshrc"
+fi
+
 echo
 echo "All done."
