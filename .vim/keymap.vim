@@ -8,7 +8,6 @@ vnoremap <silent> * :<C-u>call VisualSelection('', '')<CR>/<C-R>=@/<CR><CR>
 vnoremap <silent> # :<C-u>call VisualSelection('', '')<CR>?<C-R>=@/<CR><CR>
 
 " Paste mode toggle
-set pastetoggle=<F2>
 map <Leader>spp :setlocal paste!<CR>
 
 " Strip trailing whitespace
@@ -84,6 +83,9 @@ endif
 if !has('nvim')
   " leader key (Neovim uses <Space> via LazyVim)
   let mapleader = '\'
+
+  "pastetoggle removed in Neovim; Neovim handles bracketed paste automatically"
+  set pastetoggle=<F2>
 
   " Disable built-in completion (use plugin instead)
   inoremap <c-n> <nop>
